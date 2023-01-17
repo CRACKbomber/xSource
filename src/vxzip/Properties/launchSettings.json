@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "vxzip - extract (tf2)": {
+      "commandName": "Project",
+      "commandLineArgs": "extract -z D:\\temp\\xsource\\samples\\tf2.360.zip -d D:\\temp\\xsource\\tf2-extract"
+    },
+    "vxzip - create (tf2)": {
+      "commandName": "Project",
+      "commandLineArgs": "create -z D:\\temp\\xsource\\tf2.360.zip -d D:\\temp\\xsource\\tf2-extract"
+    },
+    "vxzip - create (smol)": {
+      "commandName": "Project",
+      "commandLineArgs": "create -z D:\\temp\\xsource\\smol.360.zip -d D:\\temp\\xsource\\smol"
+    }
+  }
+}
