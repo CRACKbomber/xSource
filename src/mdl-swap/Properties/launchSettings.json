@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "mdl-swap": {
-      "commandName": "Project",
-      "commandLineArgs": "D:\\temp\\hybrid_samples .\\output"
-    }
-  }
-}
