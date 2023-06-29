@@ -105,7 +105,10 @@ namespace Crack.xSource.Zip
         public void ExtractFile(string localFileName, string zipFileName)
         {
             using (EndianWriter writer = new EndianWriter(CreateOutputFile(localFileName), false))
+            {
                 writer.Write(GetFileBytes(zipFileName));
+                s_logger.Info($"Extracted {zipFileName} to {localFileName}");
+            }
         }
 
         public byte[] GetFileBytes(string fileName)
