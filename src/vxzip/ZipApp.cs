@@ -1,4 +1,5 @@
-﻿using Crack.xSource.Zip;
+﻿using CommandLine;
+using Crack.xSource.Zip;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -7,7 +8,19 @@ namespace vxzip
 {
     internal static class ZipApp
     {
-        internal static void ConfigureLogger(ZipOperation ops)
+        internal static void Run(string[] args)
+        {
+            var parsedArgs = Parser.Default.ParseArguments<ExtractOptions, CreateOptions>(args);
+            parsedArgs.WithParsed(options =>
+            {
+                if (options is ExtractOptions)
+                    ExtractZip(options as ExtractOptions);
+                else if (options is CreateOptions)
+                    CreateZip(options as CreateOptions);
+            });
+        }
+
+        private static void ConfigureLogger(ZipOperation ops)
         {
             var config = new LoggingConfiguration();
             LogLevel minLogLevel = ops.Verbose ? LogLevel.Trace : LogLevel.Info;
@@ -49,7 +62,7 @@ namespace vxzip
             // Apply the configuration
             LogManager.Configuration = config;
         }
-        internal static void CreateZip(CreateOptions? ops)
+        private static void CreateZip(CreateOptions? ops)
         {
             ConfigureLogger(ops);
 
@@ -63,7 +76,7 @@ namespace vxzip
             }
         }
 
-        internal static void ExtractZip(ExtractOptions? ops)
+        private static void ExtractZip(ExtractOptions? ops)
         {
             ConfigureLogger(ops);
             try
