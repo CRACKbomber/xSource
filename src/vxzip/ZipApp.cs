@@ -7,41 +7,51 @@ namespace vxzip
 {
     internal static class ZipApp
     {
-        internal static void ConfigureLogger()
+        internal static void ConfigureLogger(ZipOperation ops)
         {
             var config = new LoggingConfiguration();
+            LogLevel minLogLevel = ops.Verbose ? LogLevel.Trace : LogLevel.Info;
 
-            // Console target
-            var consoleTarget = new ColoredConsoleTarget();
-            consoleTarget.Layout = "${longdate}|${level:uppercase=true}|${message}${onexception:${newline}${exception:maxInnerExceptionLevel=10:format=shortType,message}}";
+            // setup console target
+            var consoleTarget = new ColoredConsoleTarget()
+            {
+                Layout = "${longdate}|${level:uppercase=true}|${message}${onexception:${newline}${exception:maxInnerExceptionLevel=10:format=shortType,message}}",
+                UseDefaultRowHighlightingRules = false
+            };
 
-            consoleTarget.UseDefaultRowHighlightingRules = false;
 
-            // Define row highlighting rules for different log levels
-            var highlightRuleTrace = new ConsoleRowHighlightingRule("level == LogLevel.Trace", ConsoleOutputColor.DarkGray, ConsoleOutputColor.NoChange);
-            var highlightRuleDebug = new ConsoleRowHighlightingRule("level == LogLevel.Debug", ConsoleOutputColor.Gray, ConsoleOutputColor.NoChange);
-            var highlightRuleInfo = new ConsoleRowHighlightingRule("level == LogLevel.Info", ConsoleOutputColor.White, ConsoleOutputColor.NoChange);
-            var highlightRuleWarn = new ConsoleRowHighlightingRule("level == LogLevel.Warn", ConsoleOutputColor.Yellow, ConsoleOutputColor.NoChange);
-            var highlightRuleError = new ConsoleRowHighlightingRule("level == LogLevel.Error", ConsoleOutputColor.Red, ConsoleOutputColor.NoChange);
-            var highlightRuleFatal = new ConsoleRowHighlightingRule("level == LogLevel.Fatal", ConsoleOutputColor.Red, ConsoleOutputColor.Yellow);
+            consoleTarget.RowHighlightingRules.Add(new ConsoleRowHighlightingRule("level == LogLevel.Info",
+                                                                                  ConsoleOutputColor.White,
+                                                                                  ConsoleOutputColor.NoChange));
+            consoleTarget.RowHighlightingRules.Add(new ConsoleRowHighlightingRule("level == LogLevel.Warn",
+                                                                                  ConsoleOutputColor.Yellow,
+                                                                                  ConsoleOutputColor.NoChange));
+            consoleTarget.RowHighlightingRules.Add(new ConsoleRowHighlightingRule("level == LogLevel.Error",
+                                                                                  ConsoleOutputColor.Red,
+                                                                                  ConsoleOutputColor.NoChange));
+            consoleTarget.RowHighlightingRules.Add(new ConsoleRowHighlightingRule("level == LogLevel.Fatal",
+                                                                                  ConsoleOutputColor.Red,
+                                                                                  ConsoleOutputColor.Yellow));
 
-            consoleTarget.RowHighlightingRules.Add(highlightRuleTrace);
-            consoleTarget.RowHighlightingRules.Add(highlightRuleDebug);
-            consoleTarget.RowHighlightingRules.Add(highlightRuleInfo);
-            consoleTarget.RowHighlightingRules.Add(highlightRuleWarn);
-            consoleTarget.RowHighlightingRules.Add(highlightRuleError);
-            consoleTarget.RowHighlightingRules.Add(highlightRuleFatal);
+            if (ops.Verbose)
+            {
+                consoleTarget.RowHighlightingRules.Add(new ConsoleRowHighlightingRule("level == LogLevel.Trace",
+                                                                                      ConsoleOutputColor.DarkGray,
+                                                                                      ConsoleOutputColor.NoChange));
+                consoleTarget.RowHighlightingRules.Add(new ConsoleRowHighlightingRule("level == LogLevel.Debug",
+                                                                                      ConsoleOutputColor.Gray,
+                                                                                      ConsoleOutputColor.NoChange));
+            }
 
-            // Add console target to the configuration
             config.AddTarget("console", consoleTarget);
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, consoleTarget));
+            config.LoggingRules.Add(new LoggingRule("*", minLogLevel, consoleTarget));
 
             // Apply the configuration
             LogManager.Configuration = config;
         }
         internal static void CreateZip(CreateOptions? ops)
         {
-            ConfigureLogger();
+            ConfigureLogger(ops);
 
             try
             {
@@ -49,20 +59,20 @@ namespace vxzip
             }
             catch (Exception e)
             {
-                LogManager.GetCurrentClassLogger().Error(e);
+                LogManager.GetCurrentClassLogger().Fatal(e);
             }
         }
 
         internal static void ExtractZip(ExtractOptions? ops)
         {
-            ConfigureLogger();
+            ConfigureLogger(ops);
             try
             {
                 new XZP2File(ops.ZipPath).ExtractWildCard(ops.WorkingDirectory, ops.SearchPattern);
             }
             catch (Exception e)
             {
-                LogManager.GetCurrentClassLogger().Error(e);
+                LogManager.GetCurrentClassLogger().Fatal(e);
             }
         }
     }
