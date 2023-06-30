@@ -1,7 +1,7 @@
 ﻿using Crack.xSource.IO;
 using System.Runtime.InteropServices;
 
-namespace Crack.xSource.Zip.Headers
+namespace Crack.xSource.Zip.XZP2.Headers
 {
     [StructLayout(LayoutKind.Sequential, Size = 0x2E)]
     public class ZipFileHeader
@@ -63,7 +63,7 @@ namespace Crack.xSource.Zip.Headers
             CompressedSize = size;
             UncompressedSize = size;
             FileNameLength = (ushort)internalName.Length;
-            ExtraFieldLength = (ushort)(alignment - (dataStart % alignment));
+            ExtraFieldLength = (ushort)(alignment - dataStart % alignment);
         }
 
         public ZipLocalFileHeader ToLocalHeader()

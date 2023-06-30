@@ -1,7 +1,7 @@
 ﻿using Crack.xSource.IO;
 using System.Runtime.InteropServices;
 
-namespace Crack.xSource.Zip.Headers
+namespace Crack.xSource.Zip.XZP2.Headers
 {
     [StructLayout(LayoutKind.Sequential, Size = 0x1E)]
     public class ZipLocalFileHeader

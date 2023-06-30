@@ -1,4 +1,4 @@
-﻿namespace Crack.xSource.Zip.Headers
+﻿namespace Crack.xSource.Zip.XZP2.Headers
 {
     public struct PreloadHeader
     {

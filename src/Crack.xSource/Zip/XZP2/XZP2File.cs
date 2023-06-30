@@ -1,11 +1,11 @@
 ﻿using Crack.xSource.IO;
 using Crack.xSource.Security;
-using Crack.xSource.Zip.Headers;
+using Crack.xSource.Zip.XZP2.Headers;
 using NLog;
 using ObjectPrinter;
 using System.Text.RegularExpressions;
 
-namespace Crack.xSource.Zip
+namespace Crack.xSource.Zip.XZP2
 {
     public class XZP2File : IDisposable
     {

@@ -1,6 +1,6 @@
-﻿using Crack.xSource.Zip.Headers;
+﻿using Crack.xSource.Zip.XZP2.Headers;
 
-namespace Crack.xSource.Zip
+namespace Crack.xSource.Zip.XZP2
 {
     public class PreloadSection
     {
