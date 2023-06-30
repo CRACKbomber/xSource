@@ -2,7 +2,7 @@
 {
     public interface IEndianObject
     {
-        public IEndianObject FromReader(EndianReader reader);
+        public void FromReader(EndianReader reader);
         public void ToWriter(EndianWriter writer);
     }
 }
