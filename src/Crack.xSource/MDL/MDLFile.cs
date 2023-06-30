@@ -42,8 +42,8 @@ namespace Crack.xSource.MDL
 
         private void ParseHeader(EndianReader reader)
         {
-            Header = StudioHeader.FromReader(reader);
-
+            Header = new StudioHeader();
+            Header.FromReader(reader);
             s_logger.Info($"Name: {Header.Name}");
             s_logger.Info($"Version: {Header.Version}");
             s_logger.Info($"Checksum: {Header.Checksum}");
@@ -53,7 +53,7 @@ namespace Crack.xSource.MDL
             {
                 reader.BaseStream.Seek(Header.StudioHdr2Index, SeekOrigin.Begin);
                 Header2 = new StudioHeader2();
-                Header2.Read(reader);
+                Header2.FromReader(reader);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Crack.xSource.MDL
             for (int i = 0; i < Header.BonesCount; i++)
             {
                 var bone = new StudioBone();
-                bone.Read(reader);
+                bone.FromReader(reader);
                 Bones.Add(bone);
                 // TODO: AXIS-INTERP BONES
                 // TODO: QUAT-INTERP BONES
