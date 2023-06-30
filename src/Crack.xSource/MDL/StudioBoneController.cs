@@ -1,6 +1,8 @@
-﻿namespace Crack.xSource.MDL
+﻿using Crack.xSource.IO;
+
+namespace Crack.xSource.MDL
 {
-    public class StudioBoneController
+    public class StudioBoneController : IEndianObject
     {
         public int Bone { get; set; }  // -1 == 0
 
@@ -11,5 +13,15 @@
         public int inputfield; // 0-3 user set controller, 4 mouth
         public int unused1;
         public int unused2;
+
+        public void FromReader(EndianReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToWriter(EndianWriter writer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

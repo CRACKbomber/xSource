@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Crack.xSource.MDL
 {
     [StructLayout(LayoutKind.Sequential, Size = 216)]
-    public class StudioBone
+    public class StudioBone : IEndianObject
     {
         public int NameOffset { get; set; }
         public string Name { get; set; } = "";
@@ -27,7 +27,7 @@ namespace Crack.xSource.MDL
         public int Contents { get; set; }
         public int[] Unused { get; set; } = new int[8];
 
-        public void Read(EndianReader reader)
+        public void FromReader(EndianReader reader)
         {
             NameOffset = reader.ReadInt32();
             Parent = reader.ReadInt32();
@@ -55,7 +55,7 @@ namespace Crack.xSource.MDL
                 Unused[i] = reader.ReadInt32();
         }
 
-        public void Write(EndianWriter writer)
+        public void ToWriter(EndianWriter writer)
         {
             writer.Write(NameOffset);
             writer.Write(Parent);

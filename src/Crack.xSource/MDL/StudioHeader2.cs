@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Crack.xSource.MDL
 {
     [StructLayout(LayoutKind.Sequential, Size = 256)]
-    public class StudioHeader2
+    public class StudioHeader2 : IEndianObject
     {
         public int SrcBoneTransformCount { get; set; }
         public int SrcBoneTransformOffset { get; set; }
@@ -13,7 +13,7 @@ namespace Crack.xSource.MDL
         public int LinearBoneOffset { get; set; }
         public int[] Reserved { get; set; } = new int[59];
 
-        public void Read(EndianReader reader)
+        public void FromReader(EndianReader reader)
         {
             SrcBoneTransformCount = reader.ReadInt32();
             SrcBoneTransformOffset = reader.ReadInt32();
@@ -22,6 +22,17 @@ namespace Crack.xSource.MDL
             LinearBoneOffset = reader.ReadInt32();
             for (int i = 0; i < Reserved.Length; i++)
                 Reserved[i] = reader.ReadInt32();
+        }
+
+        public void ToWriter(EndianWriter writer)
+        {
+            writer.Write(SrcBoneTransformCount);
+            writer.Write(SrcBoneTransformOffset);
+            writer.Write(IllumPositionAttachmentOffset);
+            writer.Write(MaxEyeDeflection);
+            writer.Write(LinearBoneOffset);
+            for (int i = 0; i < Reserved.Length; i++)
+                writer.Write(Reserved[i]);
         }
     }
 }
